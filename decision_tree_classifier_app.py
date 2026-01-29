@@ -3,12 +3,12 @@ import numpy as np
 import pandas as pd
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 
-st.set_page_config(page_title="KNN Classifier", layout="centered")
+st.set_page_config(page_title="Decision Tree Classifier", layout="centered")
 
-st.title("🌸 KNN Classifier – Iris Dataset")
+st.title("🌳 Decision Tree Classifier – Iris Dataset")
 
 # Load dataset
 iris = load_iris()
@@ -23,7 +23,7 @@ df["Flower Name"] = df["Target"].apply(lambda x: target_names[x])
 
 # Sidebar controls
 st.sidebar.header("⚙️ Model Settings")
-k = st.sidebar.slider("Number of Neighbors (K)", 1, 15, 5)
+max_depth = st.sidebar.slider("Max Depth", 1, 10, 3)
 
 # Train-test split
 x_train, x_test, y_train, y_test = train_test_split(
@@ -31,7 +31,7 @@ x_train, x_test, y_train, y_test = train_test_split(
 )
 
 # Train model
-model = KNeighborsClassifier(n_neighbors=k)
+model = DecisionTreeClassifier(max_depth=max_depth, random_state=42)
 model.fit(x_train, y_train)
 
 # Feature inputs

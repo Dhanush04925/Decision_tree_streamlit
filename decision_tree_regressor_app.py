@@ -2,17 +2,17 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsRegressor
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import r2_score
 
-st.set_page_config(page_title="KNN Regressor", layout="centered")
+st.set_page_config(page_title="Decision Tree Regressor", layout="centered")
 
-st.title("📈 KNN Regressor")
+st.title("🌳 Decision Tree Regressor")
 
 # Generate regression dataset
 np.random.seed(0)
 X = np.random.rand(100, 1) * 10
-y = 2.5 * X.squeeze() + np.random.randn(100) * 2
+y = 3 * X.squeeze() + np.random.randn(100) * 3
 
 # Convert to DataFrame
 df = pd.DataFrame({
@@ -22,7 +22,7 @@ df = pd.DataFrame({
 
 # Sidebar controls
 st.sidebar.header("⚙️ Model Settings")
-k = st.sidebar.slider("Number of Neighbors (K)", 1, 15, 5)
+max_depth = st.sidebar.slider("Max Depth", 1, 10, 3)
 
 # Train-test split
 x_train, x_test, y_train, y_test = train_test_split(
@@ -30,7 +30,7 @@ x_train, x_test, y_train, y_test = train_test_split(
 )
 
 # Train model
-model = KNeighborsRegressor(n_neighbors=k)
+model = DecisionTreeRegressor(max_depth=max_depth, random_state=42)
 model.fit(x_train, y_train)
 
 # Input
@@ -39,7 +39,7 @@ x_input = st.sidebar.slider(
     "Enter X value",
     float(X.min()),
     float(X.max()),
-    float(X.mean())
+        float(X.mean())
 )
 
 input_data = np.array([[x_input]])
